@@ -7,6 +7,7 @@ class Cell(_Cell):
     @property
     def is_formula(self):
         return self.data_type == 'f' or self.data_type == 'e'
+        
     @property
     def formula(self):
         if self.is_formula:

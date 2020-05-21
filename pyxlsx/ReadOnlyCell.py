@@ -6,6 +6,9 @@ logger = logging.getLogger(__name__)
 
 class ReadOnlyCell(_ReadOnlyCell):
     @property
+    def is_formula(self):
+        return Cell.is_formula.__get__(self)
+    @property
     def data(self):
         return Cell.data.__get__(self)
     

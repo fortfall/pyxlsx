@@ -15,6 +15,12 @@ def new_ws(data_path):
         yield ws
 
 @pytest.fixture
+def wb_read_only(data_path):
+    path = data_path / 'read_only.xlsx'
+    with open_xlsx(path, read_only=True) as wb:
+        yield wb
+
+@pytest.fixture
 def ws_with_content(new_ws: Worksheet):
     new_ws.append(
         ["", "", "str('Unknown')", "float(4.5)", "int(500)", "str()"]

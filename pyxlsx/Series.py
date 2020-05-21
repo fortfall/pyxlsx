@@ -37,6 +37,12 @@ class Series:
     def __iter__(self):
         return iter(self.cells)
     
+    def __contains__(self, value):
+        for c in self.cells:
+            if value == c.data:
+                return True
+        return False
+    
     @property
     def values(self):
         return tuple(c.data for c in self.cells)
