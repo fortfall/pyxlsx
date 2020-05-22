@@ -5,9 +5,24 @@ from .Cell import Cell
 logger = logging.getLogger(__name__)
 
 class ReadOnlyCell(_ReadOnlyCell):
+    __slots__ = ('_cache', '_cache_type')
+    def __init__(self, sheet, row, column, value, data_type='n', style_id=0, cache=None, cache_type=None):
+        super().__init__(sheet, row, column, value, data_type=data_type, style_id=style_id)
+        self._cache = cache
+        self._cache_type = cache_type
+
     @property
     def is_formula(self):
         return Cell.is_formula.__get__(self)
+    
+    @property
+    def cache(self):
+        return self._cache
+    
+    @property
+    def cache_type(self):
+        return self._cache_type
+
     @property
     def data(self):
         return Cell.data.__get__(self)

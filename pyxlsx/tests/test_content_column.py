@@ -1,5 +1,5 @@
 import pytest
-from pyxlsx import Worksheet
+from ..Worksheet import Worksheet
 
 def test_content_column(ws_with_content: Worksheet):
     ws = ws_with_content

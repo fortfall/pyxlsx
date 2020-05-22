@@ -1,6 +1,6 @@
-from openpyxl.cell import Cell
-from pyxlsx import open_xlsx
 import pytest
+from ..Cell import Cell
+from ..open_xlsx import open_xlsx
 
 
 @pytest.fixture(params=[1, 2])

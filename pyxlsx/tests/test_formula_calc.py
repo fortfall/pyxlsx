@@ -1,5 +1,5 @@
 import logging
-from pyxlsx import Worksheet
+from ..__init__ import Worksheet
 
 logger = logging.getLogger(__name__)
 
@@ -19,14 +19,36 @@ def test_formula_calc(new_ws: Worksheet):
         ws.cell(row, 4).data = "=vlookup(C{0}, A1:B4, 2, FALSE)".format(row)  
 
     assert ws['c1'].is_formula
+    assert ws['c1'].cache is None
+    assert ws['c1'].cache_type is None
+
     assert ws['c2'].is_formula
+    assert ws['c2'].cache is None
+    assert ws['c2'].cache_type is None
+
     assert ws['c3'].is_formula
+    assert ws['c3'].cache is None
+    assert ws['c3'].cache_type is None
+
     assert ws['c4'].is_formula
+    assert ws['c4'].cache is None
+    assert ws['c4'].cache_type is None
 
     assert ws['d1'].is_formula
+    assert ws['d1'].cache is None
+    assert ws['d1'].cache_type is None
+
     assert ws['d2'].is_formula
+    assert ws['d2'].cache is None
+    assert ws['d2'].cache_type is None
+
     assert ws['d3'].is_formula
+    assert ws['d3'].cache is None
+    assert ws['d3'].cache_type is None
+
     assert ws['d4'].is_formula
+    assert ws['d4'].cache is None
+    assert ws['d4'].cache_type is None
 
     # logger.debug(ws['C1'].data)
     assert ws['C1'].data == 3

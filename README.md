@@ -47,7 +47,7 @@ wb.save(another_filename)
 ```python
 ws = wb['sheet1']
 ws.append(
-    ["", "", "str('Unknown')", "float(4.5)", "int(500)", "str()"]
+    ["", "", "str('Unknown')", "float(4.5)", "int(500)"]
 )
 # keys can only be of type str
 content1 = {
@@ -73,7 +73,7 @@ ws.append_by_header(content2)
 ```
 ||A|B|C|D|E|F|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---|
-|1|||str('Unknown')|float(30)|int(0)|str()
+|1|||str('Unknown')|float(30)|int(0)|
 |2|id|productName|productType|price|weight|origin
 |3|001|pork|meat|2.5|1000|
 |4|002|beef|meat|4.5|1000|Australia

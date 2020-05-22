@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from pathlib import Path
 import pytest
-from pyxlsx import new_xlsx, open_xlsx, Worksheet
+from ..__init__ import open_xlsx, new_xlsx, Worksheet, Workbook
 
 @pytest.fixture(params=['pyxlsx/tests/data'])
 def data_path(request):

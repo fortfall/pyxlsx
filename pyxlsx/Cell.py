@@ -4,28 +4,32 @@ from openpyxl.cell import Cell as _Cell
 logger = logging.getLogger(__name__)
 
 class Cell(_Cell):
+    __slots__ = ('_cache', '_cache_type')
+    def __init__(self, worksheet, row=None, column=None, value=None, style_array=None, cache=None, cache_type=None):
+        super().__init__(worksheet, row=row, column=column, value=value, style_array=style_array)
+        self._cache = cache
+        self._cache_type = cache_type
+
     @property
     def is_formula(self):
-        return self.data_type == 'f' or self.data_type == 'e'
-        
+        return self.data_type == 'f'
+    
     @property
-    def formula(self):
-        if self.is_formula:
-            return self._value
-        return None
+    def cache(self):
+        return self._cache
+    
+    @property
+    def cache_type(self):
+        return self._cache_type
 
     @property
     def data(self):
         # out = self._value
         if self.is_formula:
-            # result = None
-            # if self.parent.data_only_copy is not None:
-            #     result = self.parent.data_only_copy.cell(self.row, self.column)._value
-            if self.parent.data_only_copy is None \
-                    or self.parent.data_only_copy.cell(self.row, self.column).value is None:
-                out = self.parent.parent._compute(self.parent.title, self.coordinate)
+            if self.cache is not None:
+                out = self.cache
             else:
-                out = self.parent.data_only_copy.cell(self.row, self.column).value
+                out = self.parent.parent._compute(self.parent.title, self.coordinate)
             if out == None:
                 out = self._value
         else:
