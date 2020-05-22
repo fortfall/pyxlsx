@@ -97,6 +97,13 @@ class Cell(_Cell):
     def right(self):
         return self.parent.cell(self.row, self.column + 1)
     
+    def _bind_value(self, value):
+        # clear cached formula result
+        if self.is_formula and value != self._value:
+            self._cache = None
+            self._cache_type = None
+        super()._bind_value(value)
+    
 
         
             

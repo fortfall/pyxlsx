@@ -18,7 +18,6 @@ class Worksheet(_Worksheet):
         super().__init__(parent, title)
         self._header_row: Optional[int] = None
         self._use_default: Optional[bool] = False
-        self.data_only_copy: Worksheet = None
         self.header: Header = None
     
     @property
@@ -151,18 +150,6 @@ class Worksheet(_Worksheet):
         super().delete_cols(idx, amount)
         self.header.rebuild()
     
-    # override to keep data_only_copy in sync
-    def move_range(self, cell_range, rows=0, cols=0, translate=False):
-        super().move_range(cell_range=cell_range, rows=rows, cols=cols, translate=translate)
-        if self.data_only_copy:
-            self.data_only_copy.move_range(cell_range=cell_range, rows=rows, cols=cols, translate=translate)
-        
-    # override to keep data_only_copy in sync
-    def _move_cell(self, row, column, row_offset, col_offset, translate=False):
-        return super()._move_cell(row, column, row_offset, col_offset, translate=translate)
-        if self.data_only_copy:
-            self.data_only_copy._move_cell(row, column, row_offset, col_offset, translate=translate)
-
     def append_header(self, iterable):
         '''
         Append iterable as header row to worksheet (append a row and set sheet's row_offset).
