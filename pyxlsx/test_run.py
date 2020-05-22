@@ -8,7 +8,7 @@ def data_path(request):
 
 
 def test_read(data_path):
-    path = data_path / 'cache_test_1.xlsx'
+    path = data_path / 'cache_test.xlsx'
     wb = load_workbook(path, data_only=False)
     ws = wb.active
     for row in ws.rows:
