@@ -9,6 +9,10 @@ class Cell(_Cell):
         super().__init__(worksheet, row=row, column=column, value=value, style_array=style_array)
         self._cache = cache
         self._cache_type = cache_type
+    
+    @property
+    def read_only(self):
+        return self.parent.read_only
 
     @property
     def is_formula(self):
@@ -21,6 +25,21 @@ class Cell(_Cell):
     @property
     def cache_type(self):
         return self._cache_type
+
+    @property
+    def value(self):
+        """Get or set the value held in the cell.
+
+        :type: depends on the value (string, float, int or
+            :class:`datetime.datetime`)
+        """
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        if self.read_only and self._value is not None:
+            raise AttributeError("Cell is read only")
+        self._value = value
 
     @property
     def data(self):
@@ -57,8 +76,10 @@ class Cell(_Cell):
     
     @data.setter
     def data(self, value):
+        if self.read_only and self._value is not None:
+            raise AttributeError("Cell is read only")
         self._bind_value(value)
-    
+
     @property
     def horizontal(self):
         return tuple(self.parent.cell(self.row, x) for x in range(self.column, self.parent.max_column + 1))

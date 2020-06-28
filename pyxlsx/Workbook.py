@@ -31,6 +31,8 @@ class Workbook(_Workbook):
             self.save(self.filename)
     
     def save(self, filename=None):
+        if self._read_only:
+            raise Exception("Workbook can't be saved (read only mode).")
         if filename is not None:
             super().save(filename)
         elif self.filename is not None:

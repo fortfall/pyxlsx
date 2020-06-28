@@ -21,6 +21,10 @@ class Worksheet(_Worksheet):
         self.header: Header = None
     
     @property
+    def read_only(self):
+        return self.parent._read_only
+    
+    @property
     def header_row(self):
         '''
         Which row is the header row. When header_row is not None, header is initialized.
