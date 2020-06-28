@@ -57,8 +57,7 @@ class WorksheetReader(_WorksheetReader):
             self.bind_cells_read_only()
         else:
             self.bind_cells()
-        self.bind_merged_cells()
-        if not self.read_only:
+            self.bind_merged_cells()
             self.bind_hyperlinks()
         self.bind_formatting()
         self.bind_col_dimensions()
