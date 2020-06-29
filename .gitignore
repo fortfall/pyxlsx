@@ -200,6 +200,12 @@ Backup of *.doc*
 # Visio autosave temporary files
 *.~vsd*
 
+# parent package
+openpyxl
+
+# test scripts
+test_scripts
+
 # End of https://www.gitignore.io/api/libreoffice,microsoftoffice
 
 # End of https://www.gitignore.io/api/macos,python,windows,visualstudiocode

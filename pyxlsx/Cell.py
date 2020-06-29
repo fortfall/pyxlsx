@@ -39,7 +39,7 @@ class Cell(_Cell):
     def value(self, value):
         if self.read_only and self._value is not None:
             raise AttributeError("Cell is read only")
-        self._value = value
+        self._bind_value(value)
 
     @property
     def data(self):
