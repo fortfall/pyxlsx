@@ -16,6 +16,7 @@ __license__ = constants.__license__
 setup(
     name='pyxlsx',
     packages=find_packages(
+        # where='pyxlsx',
         exclude=['*.tests', '*.test_.*', 'tests', 'develop']
     ),
     package_dir={},
