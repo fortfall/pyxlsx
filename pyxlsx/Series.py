@@ -204,10 +204,12 @@ class Header(ContentRow):
             cell_value = self.parent.cell(row, c.column).data
             try:
                 default = eval(cell_value)
-                dtype = type(default)
             except:
                 default = None
+            if default == None:
                 dtype = None
+            else:
+                dtype = type(default)
             self.default_map[c.column] = {
                 'default': default,
                 'type': dtype

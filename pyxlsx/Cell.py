@@ -1,7 +1,9 @@
 import logging
 from openpyxl.cell import Cell as _Cell
 
+logging.basicConfig()
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 class Cell(_Cell):
     __slots__ = ('_cache', '_cache_type')
@@ -61,17 +63,6 @@ class Cell(_Cell):
                     out = self.parent.header.get_default(self.column)
                 except Exception as e:
                     logger.debug(str(e))
-            else:
-                default_type = self.parent.header.get_type(self.column)
-                if default_type is not None:
-                    try:
-                        out = default_type(out)
-                    except Exception as e:
-                        if default_type == int:
-                            out = 0
-                        elif default_type == float:
-                            out = 0.0
-                        logger.warning(str(e))
         return out
     
     @data.setter

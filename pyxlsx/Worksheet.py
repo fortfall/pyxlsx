@@ -1,3 +1,4 @@
+import logging
 from typing import Generator, Union, Optional
 from inspect import isgenerator
 from openpyxl.worksheet.worksheet import Worksheet as _Worksheet
@@ -12,6 +13,10 @@ from openpyxl.worksheet.views import (
 )
 from .Series import ContentRow, Header, InvalidOperationError
 from .Cell import Cell
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 class Worksheet(_Worksheet):
     def __init__(self, parent, title=None):
@@ -58,8 +63,11 @@ class Worksheet(_Worksheet):
     
     @use_default.setter
     def use_default(self, value):
-        if value == True and self.header is None:
-            raise ValueError(f"Cannot enable use_default cause {self.name}'s header row is not set.")
+        if value == True :
+            if self.header is None:
+                raise InvalidOperationError(f"Cannot enable use_default cause {self.name}'s header row is not set.")
+            if self.header_row <= 1:
+                raise InvalidOperationError(f"Cannot set use_default cause there's no row above header row (header_row = {self.header_row}).")
         self._use_default = value
         self.header.setup_use_default(value)
     
@@ -70,14 +78,6 @@ class Worksheet(_Worksheet):
             idx: the idx-th row
             amount: amount of rows to be inserted
         '''
-        if type(idx) != int:
-            raise TypeError(f"idx should be of type int (got {type(idx)}.")
-        if type(amount) != int:
-            raise TypeError(f"idx should be of type int (got {type(amount)}.")
-        if idx <= 0:
-            raise ValueError(f"Cannot insert before the {idx} row.")
-        if amount < 0:
-            raise ValueError(f"Cannot insert {amount} rows.")
         if amount == 0:
             return
         super().insert_rows(idx, amount)
@@ -92,17 +92,13 @@ class Worksheet(_Worksheet):
             idx: the idx-th row
             amount: amount of rows to be deleted
         '''
-        if type(idx) != int:
-            raise TypeError(f"idx should be of type int (got {type(idx)}.")
-        if type(amount) != int:
-            raise TypeError(f"idx should be of type int (got {type(amount)}.")
-        if idx <= 0:
-            raise ValueError(f"Cannot insert before the {idx} row.")
-        if amount < 0:
-            raise ValueError(f"Cannot insert {amount} rows.")
         if amount == 0:
             return
         super().delete_rows(idx, amount)
+        if self.use_default:
+            default_row = self.header_row - 1
+            if default_row >= idx and default_row < idx + amount:
+                self.use_default = False
         if self.header is None or self.header_row < idx:
             return
         elif self.header_row >= idx and self.header_row < idx + amount:
