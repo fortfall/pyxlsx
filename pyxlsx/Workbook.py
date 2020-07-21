@@ -17,10 +17,9 @@ from .Worksheet import Worksheet
 
 class Workbook(_Workbook):
     filename: str = None
-    def __init__(self, filename=None, read_only=False, use_default=False, iso_dates=False):
+    def __init__(self, filename=None, read_only=False, iso_dates=False):
         self.filename = filename
         self._read_only = read_only
-        self._use_default = use_default
         self._formula_calculator = None
         self._sheets = []
         self._pivots = []

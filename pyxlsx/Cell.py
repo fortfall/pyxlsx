@@ -55,14 +55,6 @@ class Cell(_Cell):
                 out = self._value
         else:
             out = self._value
-        if self.parent.header is None or self.row <= self.parent.header_row:
-            return out
-        if self.parent.use_default:
-            if out is None:
-                try:
-                    out = self.parent.header.get_default(self.column)
-                except Exception as e:
-                    logger.debug(str(e))
         return out
     
     @data.setter

@@ -164,8 +164,6 @@ class Header(ContentRow):
     def __init__(self, parent, cells):
         super().__init__(parent, cells)
         self.column_map: Dict[str, int] = self._init_column_map()
-        self.setup_use_default(self.use_default)
-        self.default_map: Dict[int, Dict[str, Union[str, int, float, bool, None]]] = {}
     
     def rebuild(self):
         '''
@@ -176,7 +174,6 @@ class Header(ContentRow):
         self._max_column = self.cells[-1].column
         self.cell_dict = self._gen_cell_dict()
         self.column_map = self._init_column_map()
-        self.setup_use_default(self.use_default)
 
     def refresh(self, increment=0, new_row=None):
         '''
@@ -184,36 +181,10 @@ class Header(ContentRow):
         '''
         super().refresh(increment, new_row)
         self.column_map = self._init_column_map()
-        self.setup_use_default(self.use_default)
     
     def __setitem__(self, key, value):
         super().__setitem__(key, value)
         self.refresh()
-    
-    @property
-    def use_default(self):
-        return self.parent.use_default
-    
-    def setup_use_default(self, value):
-        if value != True:
-            return
-        row = self.row - 1
-        if row <= 0:
-            return
-        for c in self.cells:
-            cell_value = self.parent.cell(row, c.column).data
-            try:
-                default = eval(cell_value)
-            except:
-                default = None
-            if default == None:
-                dtype = None
-            else:
-                dtype = type(default)
-            self.default_map[c.column] = {
-                'default': default,
-                'type': dtype
-            }
     
     def _init_column_map(self):
         cmap = {}
@@ -230,23 +201,5 @@ class Header(ContentRow):
         '''
         try:
             return self.column_map[key]
-        except:
-            return None
-    
-    def get_type(self, key):
-        if not self.use_default:
-            return None
-        column = self.key_to_column(key)
-        try:
-            return self.default_map[column]['type']
-        except:
-            return None
-    
-    def get_default(self, key):
-        if not self.use_default:
-            return None
-        column = self.key_to_column(key)
-        try:
-            return self.default_map[column]['default']
         except:
             return None

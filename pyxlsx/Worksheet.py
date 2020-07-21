@@ -22,7 +22,6 @@ class Worksheet(_Worksheet):
     def __init__(self, parent, title=None):
         super().__init__(parent, title)
         self._header_row: Optional[int] = None
-        self._use_default: Optional[bool] = False
         self.header: Header = None
     
     @property
@@ -54,23 +53,6 @@ class Worksheet(_Worksheet):
     def _init_header(self, header_row):
         self.header = Header(self, self[header_row])
 
-    @property
-    def use_default(self):
-        '''
-        Whether use default value and type
-        '''
-        return self._use_default
-    
-    @use_default.setter
-    def use_default(self, value):
-        if value == True :
-            if self.header is None:
-                raise InvalidOperationError(f"Cannot enable use_default cause {self.name}'s header row is not set.")
-            if self.header_row <= 1:
-                raise InvalidOperationError(f"Cannot set use_default cause there's no row above header row (header_row = {self.header_row}).")
-        self._use_default = value
-        self.header.setup_use_default(value)
-    
     def insert_rows(self, idx, amount=1):
         '''
         Insert amount of rows before the idx-th row.
@@ -95,20 +77,13 @@ class Worksheet(_Worksheet):
         if amount == 0:
             return
         super().delete_rows(idx, amount)
-        if self.use_default:
-            default_row = self.header_row - 1
-            if default_row >= idx and default_row < idx + amount:
-                self.use_default = False
         if self.header is None or self.header_row < idx:
             return
         elif self.header_row >= idx and self.header_row < idx + amount:
             self.header_row = None
-            self._use_default = False
         elif self.header_row >= idx + amount:
             self.header_row -= amount
             self.header.refresh(new_row=self.header_row)
-            if self.header_row == idx + amount:
-                self.use_default = False
     
     def insert_cols(self, idx, amount=1):
         '''
